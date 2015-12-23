@@ -1,0 +1,14 @@
+
+
+RewriteEngine On
+
+RewriteBase /event-app/
+
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^(.*)$ /event-app/index.php?/$1 [L]
+
+
+
