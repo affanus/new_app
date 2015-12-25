@@ -42,7 +42,7 @@
                         <? } ?>
 						<div class="col-md-6 col-md-offset-3">
 							<br/>
-							<span class="text-lg text-bold text-primary">AIRBOOK ADMIN</span>
+							<span class="text-lg text-bold text-primary">Chymps ADMIN</span>
 							<br/><br/>
 								<? 
                                 $attributes = array('id' => 'loginform','name' => 'loginform','class' => 'form floating-label form-validate');

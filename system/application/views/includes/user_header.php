@@ -20,7 +20,7 @@ $row_user_query = $user_query->row();
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
-		<title>Airbook</title>
+		<title>CHYMPS</title>
 
 		<!-- BEGIN META -->
 		<meta charset="utf-8">
@@ -54,7 +54,7 @@ $row_user_query = $user_query->row();
                         <li class="header-nav-brand" >
                             <div class="brand-holder">
                                 <a href="<?=base_url()?>/users">
-                                    <img class="" src="<?=base_url()?>assets/img/logo_airbook_header.png" />
+                                    <img class="" src="<?=base_url()?>assets/img/logo_CHYMPS_header.png" />
                                 </a>
                             </div>
                         </li>
@@ -76,7 +76,7 @@ $row_user_query = $user_query->row();
                                 <? endif;?>
                                 <span class="profile-info">
                                     <?=stripslashes($this->session->userdata('fname'))?> <?=stripslashes($this->session->userdata('lname'))?>
-                                    <small>Airbooker</small>
+                                    <small>CHYMPSER</small>
                                 </span>
                             </a>
                             <ul class="dropdown-menu animation-dock">

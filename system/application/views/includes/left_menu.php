@@ -8,7 +8,7 @@
 					</div>
 					<div class="expanded">
 						<a href="<?=base_url()?>/admin">
-							<span class="text-lg text-bold text-primary ">AIRBOOK&nbsp;ADMIN</span>
+							<span class="text-lg text-bold text-primary ">CHYMPS&nbsp;ADMIN</span>
 						</a>
 					</div>
 				</div>
@@ -95,7 +95,7 @@
 
 					<div class="menubar-foot-panel">
 						<small class="no-linebreak hidden-folded">
-							<span class="opacity-75">Copyright &copy; 2015</span> <strong>Airbook</strong>
+							<span class="opacity-75">Copyright &copy; 2015</span> <strong>CHYMPS</strong>
 						</small>
 					</div>
 				</div><!--end .menubar-scroll-panel-->

@@ -1,7 +1,7 @@
 <div class="row home-slider">
 	<div class="slide slide-1" style="background-image:url(<?=base_url()?>/assets/img/header_image.jpg);"></div>
     <div class="slider-text">
-    	<h1>What do you need done? <br /> Find it on Airbook</h1>
+    	<h1>What do you need done? <br /> Find it on CHYMPS</h1>
         <h2>Browse. Buy. Done.</h2>
         <div class="globle-search">
         	<input type="text" class="main-search-home" placeholder="What are you looking for?"/>

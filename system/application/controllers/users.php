@@ -64,8 +64,7 @@ class Users extends Controller {
 	
 	function register_step2(){
 		$data['query_countries']=$this->db->query("SELECT id,title From meta_location where type='CO'");
-		$data['query_companies']=$this->db->query("SELECT id,title From companies where isactive=1");
-		$data['main_content'] = 'register_second_step';
+		$data['main_content'] = 'register';
 		$data['jsFilesArray'] =  array("libs/select2/select2.min.js","libs/bootstrap-datepicker/bootstrap-datepicker.js");
 		$this->load->view('includes/register', $data);	
 	}
@@ -75,17 +74,23 @@ class Users extends Controller {
 		if($query->num_rows() == 0) :
 			$fname=addslashes($this->input->post('fname'));
 			$lname=addslashes($this->input->post('lname'));
+			$emailAddress = $this->input->post('email');
+			$verificationcode = md5($emailAddress.$fname.date('Y-m-d H:i:s'));
+			
 			if($this->input->post('title')=='Mr'):
 				$gender=1;
 			else:
 				$gender=2;
 			endif;
 			$data = array(
-					'email' => $this->input->post('email') ,
+					'email' => $this->input->post('email'),
+					'fname' => $fname,
+					'lname' => $lname,
 					'password' => md5($this->db->escape($this->input->post('password1'))) ,
-					'isactive' => 1,
-					'remail' => $this->input->post('email'),
-					'created_date' => date("Y-m-d")
+					'isactive' => 0,
+					'bday' => addslashes($this->input->post('bday')),
+					'created_date' => date("Y-m-d"),
+					'activation_code' => $verificationcode
 				);
 			$this->db->insert('users', $data); 
 			$user_id = $this->db->insert_id();
@@ -102,14 +107,33 @@ class Users extends Controller {
 				'lname' => $lname,
 				'gender' => $gender,
 				'email' => $this->db->escape($this->input->post('email')),
-				'isactive' => 1,
-				'primary' => 1
+				'isactive' => 0,
+				'primary' => 1,
+				'bday' => addslashes($this->input->post('bday'))
 			);
 			$this->db->insert("contacts", $data2);
-			redirect(base_url().'users/register_step2');
+			/*$this->load->plugin('phpmailer');	
+			$query = $this->db->query("SELECT * from tblcannedemails where MessageType='85'");
+			$row = $query->row();
+			$body = stripslashes($row->MessageContents);
+			$bsurl = base_url();
+			$full_name = $this->input->post('fname')." ".$this->input->post('lname');
+			$login_details = '';
+			$user_email = $this->input->post('email');
+			$trans = array("#VERIFICATIONCODE#" => "$verificationcode","#BASEURL#" => "$bsurl","#USERNAME#" => "$full_name","#LOGINDETAILS#" => "$login_details");
+			$emaildata['email_content'] = strtr($body, $trans);
+			$msg = $this->load->view('email_template/email_template', $emaildata, true);
+			//smtpmailer($this->input->post('emailAddress'), $row->mailemail, $row->mailemail, $row->mailsubject, $msg);
+			smtpmailer_dyn($this->input->post('emailAddress'), $row->mailemail, $row->mailemail, $row->mailsubject, $msg, '123456');*/
+			redirect(base_url().'users/account_active/'.$user_id.'/');
 		else:
-			redirect(base_url().'users/register');
+			redirect(base_url().'users/register/');
 		endif;
+	}
+	function account_active($user_id){
+		$data['main_content'] = 'signup_successful';
+		$data['jsFilesArray'] =  array("libs/select2/select2.min.js","libs/bootstrap-datepicker/bootstrap-datepicker.js");
+		$this->load->view('includes/register', $data);	
 	}
 	
 	function register_ss_action(){
@@ -143,8 +167,8 @@ class Users extends Controller {
 		redirect(base_url().'users/dashboard');
 		
 	}
-
 	
+
 	function login(){
 		$data['main_content'] = 'login';
 		$data['errormess'] = '';
@@ -154,18 +178,17 @@ class Users extends Controller {
 	function login_confirmation(){
 		if($this->input->post('email') && $this->input->post('password')){
 			$query=$this->db->query("SELECT
-				users.id,
-				users.email,
-				contacts.fname,
-				contacts.lname
+				id,
+				email,
+				fname,
+				lname,
+				isactive
 				FROM
 				users
-				INNER JOIN contacts ON users.id = contacts.user_id
 				WHERE
-				users.email = '".addslashes($this->input->post('email'))."' AND
-				users.`password` = '".md5($this->input->post('password'))."' AND
-				users.isactive = 1 AND
-				contacts.`primary` = 1");
+				email = '".addslashes($this->input->post('email'))."' AND
+				password = '".md5($this->input->post('password'))."' AND
+				isactive = 1");
 			if($query->num_rows() == 0) :
 				$data['main_content'] = 'login';
 				$data['errormess'] = '1';

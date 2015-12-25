@@ -49,7 +49,7 @@ $row_admin_data = $query_admin_data->row();
 						<li class="header-nav-brand" >
 							<div class="brand-holder">
 								<a href="<?=base_url()?>/admin">
-									<span class="text-lg text-bold text-primary">AIRBOOK ADMIN</span>
+									<span class="text-lg text-bold text-primary">Chymps ADMIN</span>
 								</a>
 							</div>
 						</li>
