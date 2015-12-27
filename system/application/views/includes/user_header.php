@@ -85,7 +85,7 @@ $row_user_query = $user_query->row();
                                 <li><a href="#">Dashboard</a></li>
                                 <li><a href="#">Settings</a></li>
                                 <li class="divider"></li>
-                                <li><a href="<?=base_url()?>admin/admin_login/logout"><i class="fa fa-fw fa-power-off text-danger"></i> Logout</a></li>
+                                <li><a href="<?=base_url()?>users/logout"><i class="fa fa-fw fa-power-off text-danger"></i> Logout</a></li>
                             </ul><!--end .dropdown-menu -->
                         </li><!--end .dropdown -->
                     </ul><!--end .header-nav-profile -->

@@ -77,11 +77,11 @@ class Users extends Controller {
 			$emailAddress = $this->input->post('email');
 			$verificationcode = md5($emailAddress.$fname.date('Y-m-d H:i:s'));
 			
-			if($this->input->post('title')=='Mr'):
+			/*if($this->input->post('title')=='Mr'):
 				$gender=1;
 			else:
 				$gender=2;
-			endif;
+			endif;*/
 			$data = array(
 					'email' => $this->input->post('email'),
 					'fname' => $fname,
@@ -100,7 +100,9 @@ class Users extends Controller {
 					'lname' => $lname
 				);
 			$this->session->set_userdata($session_data);
-			$data2 = array(
+			
+			
+			/*$data2 = array(
 				'user_id' => $user_id ,
 				'title' => $this->input->post('title') ,
 				'fname' => $fname,
@@ -182,7 +184,8 @@ class Users extends Controller {
 				email,
 				fname,
 				lname,
-				isactive
+				isactive,
+				bday
 				FROM
 				users
 				WHERE
@@ -195,17 +198,51 @@ class Users extends Controller {
 				$this->load->view('includes/register', $data);
 			else:
 				$row_user_query = $query->row();
+				
+				 $birthDate = $query->row('bday');
+			  //explode the date to get month, day and year
+			  $birthDate = explode("/", $birthDate);
+			  //get age from date or birthdate
+			  $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md")
+				? ((date("Y") - $birthDate[2]) - 1)
+				: (date("Y") - $birthDate[2]));
+
 				$session_data = array(
 					'user_id' => $row_user_query->id,
 					'fname' => stripslashes($row_user_query->fname),
 					'lname' => stripslashes($row_user_query->lname)
 				);
 				$this->session->set_userdata($session_data);
-				redirect(base_url().'users/dashboard');
+				
+				if ($age > 14){
+					redirect(base_url().'users/adult_auth');
+				}
+				else {
+					redirect(base_url().'users/child_auth');
+				}
+				
 			endif;
 		}
 	}
 	
+	function adult_auth(){
+		if($this->session->userdata('user_id')):
+			$data['main_content'] = 'users/adult_auth';
+			$this->load->view('includes/user_adult', $data);
+		else:
+			redirect(base_url().'users/login');
+		endif;
+		
+	}
+	function child_auth(){
+		if($this->session->userdata('user_id')):
+			$data['main_content'] = 'users/child_auth';
+			$this->load->view('includes/user_adult', $data);
+		else:
+			redirect(base_url().'users/login');
+		endif;	
+		
+	}
 	function dashboard(){
 		if($this->session->userdata('user_id')):
 			$data['main_content'] = 'users/user_dashboard';

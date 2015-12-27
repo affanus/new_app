@@ -1,5 +1,5 @@
 <?php
-$CI =& get_instance();
+ /*?>$CI =& get_instance();
 $CI->load->model('security');
 $CI->security->validate_user_session();
 $user_query = $this->db->query("SELECT
@@ -14,7 +14,7 @@ $user_query = $this->db->query("SELECT
 						WHERE
 						users.id  = '".$this->session->userdata('user_id')."' and contacts.`primary`='1'");
 $row_user_query = $user_query->row();	
-?>
+?><?php */?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
@@ -76,7 +76,7 @@ $row_user_query = $user_query->row();
 						<li><a href="<?=base_url()?>users/register/" class="btn ink-reaction btn-raised btn-primary btn-user">Join</a></li>
                         <li><a href="<?=base_url()?>users/login/" class="btn ink-reaction btn-raised btn-primary btn-user">Sign In</a></li>
 					</ul>
-                    <? if($this->session->userdata('user_id')):?>
+                    <?php /*?><? if($this->session->userdata('user_id')):?>
                     <ul class="header-nav header-nav-profile">
                         <li class="dropdown">
                             <a href="javascript:void(0);" class="dropdown-toggle ink-reaction" data-toggle="dropdown">
@@ -100,7 +100,7 @@ $row_user_query = $user_query->row();
                             </ul><!--end .dropdown-menu -->
                         </li><!--end .dropdown -->
                     </ul><!--end .header-nav-profile -->
-                    <? endif;?>
+                    <? endif;?><?php */?>
                 </div>
 			</div>
             </div>

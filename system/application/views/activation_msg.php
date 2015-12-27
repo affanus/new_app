@@ -46,7 +46,7 @@ $(document).ready(function() {
     <div class="card contain-sm style-accent ">
         <div class="card-head">
                                             
-            <header>Join airbook for Free</header>
+            <header>Join CHYMPS for Free</header>
         </div>
         <div class="card-body style-default-bright">
         	<form class="form floating-label form-validate" role="form" action="<?= base_url();?>users/register_action" method="post" id="userRegistration" enctype="multipart/form-data">

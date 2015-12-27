@@ -32,17 +32,20 @@
             	<? if($this->session->userdata('user_id')):
 				
 					$user_query = $this->db->query("SELECT
-						users.email,
-						contacts.fname,
-						contacts.title,
-						contacts.lname,
-						contacts.profile_pic
+						email,
+						fname,
+						lname,
+						profile_pic,
+						isactive
 						FROM
 						users
-						INNER JOIN contacts ON users.id = contacts.user_id
 						WHERE
-						users.id  = '".$this->session->userdata('user_id')."' and contacts.`primary`='1'");
+						users.id  = '".$this->session->userdata('user_id')."'");
 						$row_user_query = $user_query->row(); 	
+						$status = $user_query->row('isactive');
+					
+						
+						
 				?>
                 	<div class="headerbar-left">
                         <ul class="header-nav header-nav-options">
@@ -56,6 +59,7 @@
                             
                         </ul>
 					</div>
+                    <?php if($status == '1') { ?>
                     <div class="headerbar-right">
                         <ul class="header-nav header-nav-profile">
                             <li class="dropdown">
@@ -76,12 +80,14 @@
                                     <li><a href="#">Dashboard</a></li>
                                     <li><a href="#">Settings</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="<?=base_url()?>admin/admin_login/logout"><i class="fa fa-fw fa-power-off text-danger"></i> Logout</a></li>
+                                    <li><a href="<?=base_url()?>users/logout"><i class="fa fa-fw fa-power-off text-danger"></i> Logout</a></li>
                                 </ul><!--end .dropdown-menu -->
                             </li><!--end .dropdown -->
                         </ul><!--end .header-nav-profile -->
                     </div>
+                    <?php }  ?>
 				</div>
+				
                 <? else:?>
             		<img class="" src="<?=base_url()?>assets/img/logo_CHYMPS.png"  style="display:block; margin:15px auto;"/>
                 <? endif; ?>
