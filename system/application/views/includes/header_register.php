@@ -76,7 +76,7 @@
                                 </a>
                                 <ul class="dropdown-menu animation-dock">
                                     <li class="dropdown-header">Config</li>
-                                    <li><a href="#">My profile</a></li>
+                                    <li><a href="<?=base_url()?>users/edit_profile/">My profile</a></li>
                                     <li><a href="#">Dashboard</a></li>
                                     <li><a href="#">Settings</a></li>
                                     <li class="divider"></li>

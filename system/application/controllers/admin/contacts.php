@@ -37,32 +37,20 @@ class Contacts extends Controller
 		
 		$offset = ($row - 1) * $perpage;
 		$data['jsFilesArray'] =  array("libs/DataTables/jquery.dataTables.min.js","libs/DataTables/extensions/TableTools/js/dataTables.tableTools.min.js","core/demo/DemoTableDynamic.js");
-		$data['query']=$this->db->query("SELECT
-		contacts.id,
-		contacts.title,
-		contacts.fname,
-		contacts.lname,
-		contacts.isactive,
-		contacts.profile_pic,
-		contacts.email
-		FROM
-		contacts");
-
-		
-
-		// load 'testview' view
-
+		$data['query']=$this->db->query("SELECT * FROM request where type ='admin'");
 		$data['main_content'] = $this->main_content_mange;
 		$data['add_link']=$this->add_title;
 		$this->load->view('admin/template', $data); 
 	}
 	
-	function update_status($id, $status){
+	function update_status($id, $status,$user_id){
 		
 		$data = array('isactive' =>  $status);
-		
-		$this->db->where('id', $id);
-		$this->db->update($this->tablename, $data); 
+		$admin = array('user_verify' =>  $status);
+		$this->db->where('request_id', $id);
+		$this->db->update('request', $data); 
+		$this->db->where('id', $user_id);
+		$this->db->update('users', $admin); 
 		redirect('admin/'.$this->controler_name.'/', 'refresh');
 	}
 	
@@ -394,5 +382,13 @@ class Contacts extends Controller
 			redirect('admin/'.$this->controler_name.'/', 'refresh');
 		}
 	}
+	function del($editid)
+	{   
+		$this->db->where('request_id', $editid);
+		$this->db->delete('request');	
+		redirect('admin/'.$this->controler_name.'/', 'refresh');
+		
+	}
+
 
 }

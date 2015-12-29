@@ -63,7 +63,7 @@ class Users extends Controller {
 	}
 	
 	function register_step2(){
-		$data['query_countries']=$this->db->query("SELECT id,title From meta_location where type='CO'");
+		
 		$data['main_content'] = 'register';
 		$data['jsFilesArray'] =  array("libs/select2/select2.min.js","libs/bootstrap-datepicker/bootstrap-datepicker.js");
 		$this->load->view('includes/register', $data);	
@@ -179,15 +179,12 @@ class Users extends Controller {
 	
 	function login_confirmation(){
 		if($this->input->post('email') && $this->input->post('password')){
-			//echo md5($this->input->post('password'));
-			//exit;
 			$query=$this->db->query("SELECT
 				id,
 				email,
 				fname,
 				lname,
 				isactive,
-				user_verify,
 				bday
 				FROM
 				users
@@ -196,15 +193,12 @@ class Users extends Controller {
 				password = '".md5($this->input->post('password'))."' AND
 				isactive = 1");
 			if($query->num_rows() == 0) :
-				//echo "no login";
-				//exit;
 				$data['main_content'] = 'login';
 				$data['errormess'] = '1';
 				$this->load->view('includes/register', $data);
 			else:
-				//echo "Login";
-				//exit;
 				$row_user_query = $query->row();
+				
 				 $birthDate = $query->row('bday');
 			  //explode the date to get month, day and year
 			  $birthDate = explode("/", $birthDate);
@@ -216,21 +210,17 @@ class Users extends Controller {
 				$session_data = array(
 					'user_id' => $row_user_query->id,
 					'fname' => stripslashes($row_user_query->fname),
-					'lname' => stripslashes($row_user_query->lname),
-					'email' => stripslashes($row_user_query->email),
+					'lname' => stripslashes($row_user_query->lname)
 				);
 				$this->session->set_userdata($session_data);
-				if($row_user_query->user_verify){
-					redirect(base_url().'users/profile');
+				
+				if ($age > 14){
+					redirect(base_url().'users/adult_auth');
 				}
-				else{
-					if ($age > 14){
-						redirect(base_url().'users/adult_auth');
-					}
-					else {
-						redirect(base_url().'users/child_auth');
-					}
+				else {
+					redirect(base_url().'users/child_auth');
 				}
+				
 			endif;
 		}
 	}
@@ -250,40 +240,8 @@ class Users extends Controller {
 			$this->load->view('includes/user_adult', $data);
 		else:
 			redirect(base_url().'users/login');
-		endif;		
-	}
-	function child_ask_parents()
-	{
-		if($_POST['request_receiver_email'] !=""):
-		$data['request_receiver_id'] = $_POST['request_receiver_email'];
-		else:
-		$data['request_receiver_id'] = $_POST['request_receiver_id'];
-		endif;
-		$data['request_sender_id'] 	 = $this->session->userdata('user_id');
-		$this->db->insert('request',$data);
-		$data['main_content'] = 'users/child_auth';
-		$this->load->view('includes/user_adult', $data);
-	}
-	function profile()
-	{
-		if($this->session->userdata('user_id')):
-		$data['main_content'] = 'users/profile';
-		$this->load->view('includes/user_adult', $data);
-		else:
-			redirect(base_url().'users/login');
-		endif;		
-	}
-	function adult_ask_parents()
-	{
-		$data['request_sender_id'] 	 = $this->session->userdata('user_id');
-		if($_POST['request_receiver_id'] !=""):
-		$data['request_receiver_id'] = $_POST['request_receiver_id'];
-		else:
-		$data['type'] = "admin";
-		endif;
-		$this->db->insert('request',$data);
-		$data['main_content'] = 'users/adult_auth';
-		$this->load->view('includes/user_adult', $data);
+		endif;	
+		
 	}
 	function dashboard(){
 		if($this->session->userdata('user_id')):
@@ -294,34 +252,13 @@ class Users extends Controller {
 		endif;
 		
 	}
-	function update_status($id, $status,$user_id){
-		
-		$data = array('isactive' =>  $status);
-		$admin = array('user_verify' =>  $status,"approved_by"=>$this->session->userdata('user_id'));
-		$this->db->where('request_id', $id);
-		$this->db->update('request', $data); 
-		$this->db->where('id', $user_id);
-		$this->db->update('users', $admin); 
-		redirect(base_url().'users/profile');
-	}
+	
+	
+	
 	function logout()
 	{
 		$this->session->sess_destroy();
 		redirect(base_url());
 	}
-	function edit_profile(){
-  
-  $data['main_content'] = 'register_second_step';
-  $data['jsFilesArray'] =  array("libs/select2/select2.min.js","libs/bootstrap-datepicker/bootstrap-datepicker.js");
-  $this->load->view('includes/register', $data); 
- }
- 
-
- 
- function account_verify($user_id){
-  $data['main_content'] = 'signup_successful';
-  $data['jsFilesArray'] =  array("libs/select2/select2.min.js","libs/bootstrap-datepicker/bootstrap-datepicker.js");
-  $this->load->view('includes/register', $data); 
- }
 
 }

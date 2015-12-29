@@ -4,15 +4,13 @@ $CI->load->model('security');
 $CI->security->validate_user_session();
 $user_query = $this->db->query("SELECT
 						users.email,
-						contacts.fname,
-						contacts.title,
-						contacts.lname,
-						contacts.profile_pic
+						fname,
+						lname,
+						profile_pic
 						FROM
 						users
-						INNER JOIN contacts ON users.id = contacts.user_id
 						WHERE
-						users.id  = '".$this->session->userdata('user_id')."' and contacts.`primary`='1'");
+						id  = '".$this->session->userdata('user_id')."'");
 $row_user_query = $user_query->row();	
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -81,7 +79,7 @@ $row_user_query = $user_query->row();
                             </a>
                             <ul class="dropdown-menu animation-dock">
                                 <li class="dropdown-header">Config</li>
-                                <li><a href="#">My profile</a></li>
+                                <li><a href="<?=base_url()?>users/edit_profile/">My profile</a></li>
                                 <li><a href="#">Dashboard</a></li>
                                 <li><a href="#">Settings</a></li>
                                 <li class="divider"></li>
@@ -95,7 +93,7 @@ $row_user_query = $user_query->row();
 		<!-- END HEADER-->
 
 		<!-- BEGIN BASE-->
-		<div id="base">
+		<div id="base" style="padding-left:0px;">
 
 			<!-- BEGIN OFFCANVAS LEFT -->
 			<div class="offcanvas">

@@ -9,7 +9,7 @@ $burl = base_url();
 	<section class="style-default-bright">
     	<div class="section-header" style="position: relative;">
 			<h2 class="text-primary"><?= $title?></h2>
-            <div style="position: absolute; right: 213px; bottom: -34px; z-index: 100;"><a class="btn ink-reaction btn-raised btn-default-light" href="<?php echo base_url();?>admin/<?=$controler_name;?>/add/<?= $this->uri->segment(4);?>"><i class="fa fa-plus fa-fw"></i> <?=$add_link?> </a></div>
+            <!--<div style="position: absolute; right: 213px; bottom: -34px; z-index: 100;"><a class="btn ink-reaction btn-raised btn-default-light" href="<?php echo base_url();?>admin/<?=$controler_name;?>/add/<?= $this->uri->segment(4);?>"><i class="fa fa-plus fa-fw"></i> <?=$add_link?> </a></div>-->
 		</div>
 		<div class="section-body">
 			<?   if($query->num_rows() != 0) : ?>
@@ -17,7 +17,6 @@ $burl = base_url();
 							<thead>
 								<tr>
 									<th>Sr#</th>
-                                    <th>Pic</th>
                                     <th>Name</th>
                                     <th>Email Address</th>
 									<th class="text-right">Actions</th>
@@ -29,17 +28,15 @@ $burl = base_url();
 	 foreach($query->result() as $row): ?>
 								<tr>
 									<td><?=$c?></td>
-                                    <td><img class="img-circle width-1" src="<?=base_url()?>/_images/profile_images/thumb/<?=stripslashes($row->profile_pic)?>" alt=""></td>
-                                    <td><?= $row->title;?> <?= $row->fname;?> <?= $row->lname;?></td>
-									<td><?= $row->email?></td>
+                                    <td><?=$this->db->get_where('users', array('id' => $row->request_sender_id))->row()->fname; ?></td>
+									<td><?=$this->db->get_where('users', array('id' => $row->request_sender_id))->row()->email; ?></td>
 									<td class="text-right">
-										<a href="<?php echo base_url();?>admin/<?=$controler_name;?>/edit/<?= $row->id;?>" class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top" data-original-title="Edit <?= $row->title;?> <?= $row->fname;?> <?= $row->lname;?>"><i class="fa fa-pencil"></i></a>
                                         <? if($row->isactive == '1') { ?>
-											<a href="<?php echo base_url();?>admin/<?=$controler_name;?>/update_status/<?= $row->id;?>/0" class="btn btn-icon-toggle style-success" data-toggle="tooltip" data-placement="top" data-original-title="Status: Published" onclick="return confirm('Are You Sure To Un Publish <?= $row->title;?> <?= $row->fname;?> <?= $row->lname;?>?')"><i class="md md-cloud-done"></i></a>
+											<a href="<?php echo base_url();?>admin/<?=$controler_name;?>/update_status/<?= $row->request_id;?>/0/<?=$this->db->get_where('users', array('id' => $row->request_sender_id))->row()->id; ?>" class="btn btn-icon-toggle style-success" data-toggle="tooltip" data-placement="top" data-original-title="Status: Published" onclick="return confirm('Are You Sure To Un Publish?')"><i class="md md-cloud-done"></i></a>
                                         <? }else{?>
-                                        	<a href="<?php echo base_url();?>admin/<?=$controler_name;?>/update_status/<?= $row->id;?>/1" class="btn btn-icon-toggle style-danger " data-toggle="tooltip" data-placement="top" data-original-title="Status: Un Published" onclick="return confirm('Are You Sure To Publish <?= $row->title;?> <?= $row->fname;?> <?= $row->lname;?>?')"><i class="md md-cloud-off"></i></a>
+                                        	<a href="<?php echo base_url();?>admin/<?=$controler_name;?>/update_status/<?= $row->request_id;?>/1/<?=$this->db->get_where('users', array('id' => $row->request_sender_id))->row()->id; ?>" class="btn btn-icon-toggle style-danger " data-toggle="tooltip" data-placement="top" data-original-title="Status: Un Published" onclick="return confirm('Are You Sure To Publish?')"><i class="md md-cloud-off"></i></a>
                                         <? }?>
-										<a href="<?php echo base_url();?>admin/<?=$controler_name;?>/del/<?= $row->id;?>"  class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top" data-original-title="Delete <?= $row->title;?> <?= $row->fname;?> <?= $row->lname;?>" onclick="return confirm('Are You Sure To Delete ?')"><i class="fa fa-trash-o"></i></a>
+										<a href="<?php echo base_url();?>admin/<?=$controler_name;?>/del/<?= $row->request_id;?>"  class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top" data-original-title="Delete" onclick="return confirm('Are You Sure To Delete ?')"><i class="fa fa-trash-o"></i></a>
 									</td>
 								</tr>
   <? 

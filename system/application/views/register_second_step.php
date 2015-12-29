@@ -83,17 +83,14 @@ $(document).ready(function() {
 <section class="section-account">  
 
     <div class="card contain-sm style-accent ">
-        <div class="card-head">                        
-            <header>You are alomost done...</header>
-        </div>
         <div class="card-body style-default-bright">
         	<form class="form floating-label form-validate" role="form" action="<?= base_url();?>users/register_ss_action" method="post" id="userRegistration" enctype="multipart/form-data">
             	<h1 class="page-header" style="font-size: 24px; margin-top: 0;">Personal & Contact Informantion</h1>
             	<div class="row">
                 	<div class="col-sm-4">
                     	<div class="form-group">
-                        	<input type="text" name="bday" id="bday" class="form-control">
-                            <label for="bday" class="control-label">Birthday</label>
+                        	<input type="text" name="bio" id="bio" class="form-control">
+                            <label for="bday" class="control-label">Bio</label>
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -123,20 +120,7 @@ $(document).ready(function() {
                             <label for="department" class="control-label">Department</label>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <select class="form-control" id="company_name" name="company_name" required>
-                                <option value=""></option>
-                                <?   if($query_companies->num_rows() != 0) : 
-                                    foreach($query_companies->result() as $row):?>
-                                        <option value="<?=$row->id?>"><?= stripslashes($row->title);?></option>
-                                    <? endforeach; ?>
-                                <? endif; ?>
-                            </select>
-                            <label for="company_name">Company Name</label>
-                        </div>
-                        
-                    </div>
+                    
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
@@ -146,39 +130,8 @@ $(document).ready(function() {
                         </div>
                     </div>  
                 </div>
+                
                 <div class="row">
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <select class="form-control" id="country" name="country">
-                                        <option value=""></option>
-                                <?   if($query_countries->num_rows() != 0) : 
-                                    foreach($query_countries->result() as $row):?>
-                                        <option value="<?=$row->id?>"><?= stripslashes($row->title);?></option>
-                                    <? endforeach; ?>
-                                <? endif; ?>
-                            </select>
-                            <label for="country">Country</label>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group states_wrap">
-
-                        </div>
-                    </div> 
-                    <div class="col-lg-4">
-                        <div class="form-group city_wrap">
-
-                        </div>
-                    </div> 
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <input type="text" name="bphone" id="bphone" class="form-control" required>
-                            <label for="bphone" class="control-label">Business Phone</label>
-                        </div>
-                        
-                    </div>
                     <div class="col-sm-4">
                         <div class="form-group">
                             <input type="text" name="pphone" id="pphone" class="form-control">
@@ -189,35 +142,6 @@ $(document).ready(function() {
                         <div class="form-group">
                             <input type="text" name="mphone" id="mphone" class="form-control">
                             <label for="mphone" class="control-label">Mobile Phone</label>
-                        </div>
-                        
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <input type="text" name="fax" id="fax" class="form-control">
-                            <label for="fax" class="control-label">Fax</label>
-                        </div>
-                        
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <input type="text" name="pobox" id="pobox" class="form-control">
-                            <label for="pobox" class="control-label">P.O.Box</label>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <select id="pmc" name="pmc" class="form-control" required>
-                                <option value="">&nbsp;</option>
-                                <option value="1">Business Phone</option>
-                                <option value="2">Phone Personal</option>
-                                <option value="3">Mobile Phone</option>
-                                <option value="4">Fax</option>
-                                <option value="5">P.O.Box</option>
-                            </select>
-                            <label for="pmc" class="control-label">Preferred Method of Contact</label>
                         </div>
                         
                     </div>
