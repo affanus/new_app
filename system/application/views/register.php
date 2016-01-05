@@ -1,5 +1,8 @@
+<link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/css/theme-5/libs/bootstrap-datepicker/datepicker3.css?1424887858" />
+<link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/css/theme-5/libs/select2/select2.css?1424887856" />
 <script>
 $(document).ready(function() {
+	$('#bday').datepicker({autoclose: true, todayHighlight: true, format: "mm/dd/yyyy"});
 			$.validator.setDefaults({
 			highlight: function (element) {
 				$(element).closest('.form-group').addClass('has-error');

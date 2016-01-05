@@ -51,16 +51,9 @@ $row_user_query = $user_query->row();
                     <ul class="header-nav header-nav-options">
                         <li class="header-nav-brand" >
                             <div class="brand-holder">
-                                <a href="<?=base_url()?>/users">
-                                    <img class="" src="<?=base_url()?>assets/img/logo_CHYMPS_header.png" />
-                                </a>
+<h2>CHYMPS</h2>
                             </div>
                         </li>
-                        <li>
-							<a class="btn btn-icon-toggle menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
-								<i class="fa fa-bars"></i>
-							</a>
-						</li>
                     </ul>
                 </div>
                 <div class="headerbar-right">
@@ -79,7 +72,7 @@ $row_user_query = $user_query->row();
                             </a>
                             <ul class="dropdown-menu animation-dock">
                                 <li class="dropdown-header">Config</li>
-                                <li><a href="<?=base_url()?>users/edit_profile/">My profile</a></li>
+                                <li><a href="<?=base_url()?>users/profile/">My profile</a></li>
                                 <li><a href="#">Dashboard</a></li>
                                 <li><a href="#">Settings</a></li>
                                 <li class="divider"></li>

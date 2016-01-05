@@ -12,67 +12,56 @@ $user_query = $this->db->query("SELECT
 						WHERE
 						id  = '".$this->session->userdata('user_id')."'");
 $row_user_query = $user_query->row();	
-echo ($this->session->userdata('user_id'));
 ?>
 <div id="content">
 
 				<!-- BEGIN PROFILE HEADER -->
-				<section class="full-bleed">
-					<div class="section-body style-default-dark force-padding text-shadow">
-						<div class="img-backdrop" style="background-image: url('../../assets/img/img16.jpg')"></div>
-						<div class="overlay overlay-shade-top stick-top-left height-3"></div>
-						<div class="row">
-							<div class="col-md-2 col-xs-5">
-                                                            <? if($row_user_query->profile_pic!=''):?>
-                                <a href="<?=base_url()?>users/profile"><img  class="img-circle border-white border-xl img-responsive auto-width" src="<?=base_url()?>/_images/profile_images/thumb/<?=stripslashes($row_user_query->profile_pic)?>" alt="" /></a>
-                                <? else:?>
-                                    <a href="<?=base_url()?>users/profile"><img class="img-circle border-white border-xl img-responsive auto-width" src="<?=base_url()?>assets/img/no-user-image-square.jpg" /></a>
-                                <? endif;?>
 
-								<h3 style="text-transform:uppercase;">                                    <?=stripslashes($this->session->userdata('fname'))?> <?=stripslashes($this->session->userdata('lname'))?>
-<br><small>Consultant at CodeCovers</small></h3>
-							</div><!--end .col -->
-							<div class="col-md-9 col-xs-7">
-								<div class="width-3 text-center pull-right">
-									<strong class="text-xl">643</strong><br>
-									<span class="text-light opacity-75">followers</span>
-								</div>
-								<div class="width-3 text-center pull-right">
-									<strong class="text-xl">108</strong><br>
-									<span class="text-light opacity-75">following</span>
-								</div>
-							</div><!--end .col -->
-						</div><!--end .row -->
-						<div class="overlay overlay-shade-bottom stick-bottom-left force-padding text-right">
-							<a class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top" data-original-title="Contact me"><i class="fa fa-envelope"></i></a>
-							<a class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top" data-original-title="Follow me"><i class="fa fa-twitter"></i></a>
-							<a class="btn btn-icon-toggle" data-toggle="tooltip" data-placement="top" data-original-title="Personal info"><i class="fa fa-facebook"></i></a>
-						</div>
-					</div><!--end .section-body -->
-				</section>
-				<!-- END PROFILE HEADER  -->
 
 				<section>
 					<div class="section-body no-margin">
 						<div class="row">
 							<div class="col-md-8">
-								<h2>Friend Request</h2>
+								<h2>Search</h2>
 								<div class="tab-pane" id="activity">
 									<ul class="timeline collapse-lg timeline-hairline">
-                                    <?php $data = $this->db->select('*')->from('users')->where('fname',$friendSearch)->get()->result_array();
-									//print_r($data);
+                                    <?php 
+									$where5 = "family_member !='O' AND (u_id = '".$this->session->userdata('user_id')."' OR f_id = '".$this->session->userdata('user_id')."')";
+									$before_friends = $this->db->select('*')->from('following_list')->where($where5)->get()->result_array();
+									foreach($before_friends as $before_friendss):
+										if($before_friendss['u_id'] == $this->session->userdata('user_id'))
+										{
+											@$friend_list[] =$before_friendss['f_id'];
+										}
+										else
+										{
+											@$friend_list[] =$before_friendss['u_id'];
+										}
+ 									endforeach;
+									//AND approved_by !='".$this->session->userdata('user_id')."' AND id !='".$approved_by."' AND approved_by !=''
+									$approved_by = $this->db->get_where('users',array("id"=>$this->session->userdata('user_id')))->row()->approved_by;
+									$where1 = "fname LIKE '%$friendSearch%' AND id != '".$this->session->userdata('user_id')."' AND approved_by !=''";
+									$data = $this->db->select('*')->from('users')->where($where1)->get()->result_array();
 									foreach($data as $datas):
+									if(@!in_array($datas['id'],$friend_list)){
 									 ?>
 										<li class="timeline-inverted">
 											<div class="timeline-entry">
 												<div class="card style-default-light">
 													<div class="card-body small-padding">
-														<span class="text-medium"><?=$datas['fname']?><a class="text-primary" href="<?=base_url()?>users/send_request/<?=$datas['id']?>" style="padding-left:10px;">Add Friend</a></span>
+														<span class="text-medium">
+
+														 <? if($datas['profile_pic'] !=''):?>
+                                                        <a href="<?=base_url()?>users/profile"><img style="width:50px; height:50px;" src="<?=base_url()?>_images/profile_images/thumb/<?=$datas['profile_pic']?>" alt="" /></a>
+                                                        <? else:?>
+                                                            <a href="<?=base_url()?>users/profile"><img style="width:50px; height:50px;" src="<?=base_url()?>assets/img/no-user-image-square.jpg" /></a>
+                                                        <? endif;?>
+<?=$datas['fname']?>&nbsp;<?=$datas['lname']?><a class="text-primary pull-right" href="<?=base_url()?>users/send_request/<?=$datas['id']?>" style="padding-left:10px;padding-top:15px;">Add Friend</a></span>
 													</div>
 												</div>
 											</div><!--end .timeline-entry -->
 										</li>
-                                     <?php endforeach; ?>
+                                     <?php } endforeach; ?>
 									</ul>
 								</div><!--end #activity -->
 							</div><!--end .col -->

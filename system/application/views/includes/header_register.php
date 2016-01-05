@@ -51,9 +51,7 @@
                         <ul class="header-nav header-nav-options">
                             <li class="header-nav-brand" >
                                 <div class="brand-holder">
-                                    <a href="<?=base_url()?>/users">
-                                        <img class="" src="<?=base_url()?>assets/img/logo_chpmps_header.png" />
-                                    </a>
+<h2>CHYMPS</h2>
                                 </div>
                             </li>
                             

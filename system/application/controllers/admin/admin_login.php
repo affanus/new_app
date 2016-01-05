@@ -13,8 +13,6 @@ class Admin_login extends Controller {
 		}else {
 		redirect(base_url().'admin/admin_main/dashboard');	
 		}
-	
-			
 	}
 	function validate_credentials()
 	{		

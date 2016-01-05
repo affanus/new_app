@@ -317,13 +317,13 @@ class Events extends Controller
 	{   
 		$data['controler_name']=$this->controler_name;
 		$data['query'] = $this->db->query("Select * From ".$this->tablename." WHERE id = '$editid'");
-		$query_event_location = $this->db->query("Select country,state From ".$this->tablename." WHERE id = '$editid'");;
-		$row_event_location = $query_event_location->row();
+		//$query_event_location = $this->db->query("Select country,state From ".$this->tablename." WHERE id = '$editid'");;
+		//$row_event_location = $query_event_location->row();
 		
 		$data['query_air_cat']=$this->db->query("SELECT id,title From event_cat");
-		$data['query_countries']=$this->db->query("SELECT id,title From meta_location where type='CO'");
-		$data['query_states']=$this->db->query("SELECT id,title From meta_location where type='RE' and parent_id=".$row_event_location->country);
-		$data['query_cities']=$this->db->query("SELECT id,title From meta_location where type='CI' and parent_id=".$row_event_location->state);
+		//$data['query_countries']=$this->db->query("SELECT id,title From meta_location where type='CO'");
+		//$data['query_states']=$this->db->query("SELECT id,title From meta_location where type='RE' and parent_id=".$row_event_location->country);
+		//$data['query_cities']=$this->db->query("SELECT id,title From meta_location where type='CI' and parent_id=".$row_event_location->state);
 		$data['query_air_man_cat_link']=$this->db->query("SELECT * From event_cat_link where event_id = '$editid'");
 		$data['query_media_gallery'] = $this->db->query("Select path,id  From media WHERE belogs_to_id = '$editid' and belogs_to_type = 'events' and type!='featuredImage'");
 		$data['query_media_featuredImage'] = $this->db->query("Select path  From media WHERE belogs_to_id = '$editid' and belogs_to_type = 'events' and type='featuredImage'");
@@ -384,7 +384,7 @@ class Events extends Controller
 
 		$data = array(
 				'title' => addslashes($this->input->post('title')) ,
-				'isactive' => $this->input->post('isactive') ,
+				'isactive' => '1' ,
 				'details' => addslashes($this->input->post('editor1')),
 				'e_date' => addslashes($this->input->post('e_date')),
 				'address' => addslashes($this->input->post('address')),

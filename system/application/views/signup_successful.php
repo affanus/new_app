@@ -3,7 +3,8 @@
     <div class="card contain-sm style-accent ">
         <div class="card-body style-default-bright">
         	<form class="form floating-label form-validate" role="form" action="<?= base_url();?>users/account_verify" method="post" id="userRegistration" enctype="multipart/form-data">
-            	<h1 class="page-header" style="font-size: 24px; margin-top: 0;">Verify Account</h1>
+            	<input type="hidden" name="id" value="<?=$user_id?>"  />
+                <h1 class="page-header" style="font-size: 24px; margin-top: 0;">Verify Account</h1>
                     <div class="row">
     				<div class="col-xs-12">
                     <h1>Congrats!</h1>

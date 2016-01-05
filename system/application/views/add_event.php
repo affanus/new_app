@@ -1,13 +1,31 @@
+<?php
+$CI =& get_instance();
+$CI->load->model('security');
+$CI->security->validate_user_session();
+$user_query = $this->db->query("SELECT *
+						FROM
+						users
+						WHERE
+						id  = '".$this->session->userdata('user_id')."'");
+$row_user_query = $user_query->row();
+?>
+
 <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/css/theme-default/libs/summernote/summernote.css?1425218701" />
 <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/css/theme-5/libs/select2/select2.css?1424887856" />
 <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/css/theme-5/libs/bootstrap-datepicker/datepicker3.css?1424887858" />
+<style>
+.floating-label .form-control ~ label {
+top: 0px;
+
+}
+</style>
 <script>
 
 $(document).ready(function() {
+		$('#e_date').datepicker({autoclose: true, todayHighlight: true, format: "mm/dd/yyyy"});
   	$('#summernote').summernote({height: 300});
   	$(".select2-list").select2({allowClear: true});
 	$("#country").select2({allowClear: true});
-	$("#state").select2({allowClear: true});
 	$("#country").on("change", function (e) { 
 		var currentValue = $(this).val();
 		$('.states_wrap').html('Loading States....');
@@ -45,121 +63,106 @@ $(document).ready(function() {
 		event.preventDefault();	
 		$('.media').append('<div class="col-lg-12"><div class="form-group"><input type="file" class="form-control dirty" name="galleryImage[]" id="galleryImage"><label for="galleryImage">Event Gallery Image</label></div></div>');
 	});
-	$('.delete_gal_image').live('click',function(){
-		var gal_id=$(this).data("id");
-		var parent = $(this).closest('.galleryImageContainer');
-		var request =  $.ajax({
-			url:'<?php echo base_url();?>admin/<?=$controler_name?>/del_gal',
-			type:'post',
-			data:{editid:gal_id}
-		});
-		request.done(function( msg ) {
-		  parent.remove();
-		});
-		
-	});
   	$('#format').submit(function( event ) {
 	  	var sHTML = $('#summernote').code();
 	  	$("textarea#editor1").val(sHTML);
   	});
-	$('#e_date').datepicker({autoclose: true, todayHighlight: true, format: "yyyy-mm-dd"});
+	$('#e_date').datepicker({autoclose: true, todayHighlight: true, format: "mm/dd/yyyy"});
 });
 </script>
 <div id="content">
+				<!-- BEGIN PROFILE HEADER -->
 	<section class="style-default-bright">
     	<div class="section-header" style="position: relative;">
 			<h2 class="text-primary"></h2>
 		</div>
         <div class="section-body">
-<? 
-function searchForId($id, $array) {
-	$asn = 0;
-	foreach ($array as $val) {
-		if ($val->cat_id == $id) {
-			$asn ++;
-		}
-	}
-	return $asn;
-}
-
-$man_cat=array();
-if($query_air_man_cat_link->num_rows() != 0) : 
-	$man_cat=$query_air_man_cat_link->result();
-endif;	
-
-
-		
+       	<? 
 $attributes = array('id' => 'format','name' => 'form','class' => 'form floating-label form-validate');
-echo form_open_multipart('admin/'.$controler_name.'/edit_action/'.$this->uri->segment(4), $attributes);
-$row = $query->row();
+echo form_open_multipart('users/add_action/'.$this->uri->segment(4), $attributes);
+ 	
 ?>
+	
 				<div class="card">
 					<div class="card-head style-accent">
-						<header><?= $title ?></header>
+						<header>Create Event</header>
 					</div>
 					<div class="card-body floating-label ">
-                    
-                    	<div class="row">
+
+						<div class="row">
 							<div class="col-lg-4">
 								<div class="form-group">
-									<input type="text" class="form-control" name="title" id="title" required value="<?=stripslashes($row->title)?>">
+									<input type="text" class="form-control" name="title" id="title" required>
 									<label for="title">Event Title</label>
 								</div>
 							</div>
                             <div class="col-lg-4">
 								<div class="form-group">
-									<input type="text" class="form-control" name="e_date" id="e_date" required value="<?=$row->e_date?>">
+									<input type="text" class="form-control" name="e_date" id="e_date" required>
 									<label for="e_date">Event Date</label>
 								</div>
 							</div>
                             <div class="col-lg-4">
 								<div class="form-group">
-									<input type="text" class="form-control" name="sponsor" id="sponsor" required value="<?=stripslashes($row->sponsor)?>">
-									<label for="sponsor">Event Sponsor</label>
-								</div>
+                                	<?php 
+									$where5 = "u_id = '".$this->session->userdata('user_id')."' OR f_id = '".$this->session->userdata('user_id')."'";
+									$before_friends = $this->db->select('*')->from('following_list')->where($where5)->get()->result_array();
+									foreach($before_friends as $before_friendss):
+										if($before_friendss['u_id'] == $this->session->userdata('user_id'))
+										{
+											@$friend_list[] =$before_friendss['f_id'];
+										}
+										else
+										{
+											@$friend_list[] =$before_friendss['u_id'];
+										}
+ 									endforeach;
+									?>
+                            		<select class="form-control select2-list"  multiple required id="event_cat" name="users_cat[]">
+                                    	<?   if($query_users->num_rows() != 0) : 
+											foreach($query_users->result() as $row):
+												if(@in_array($row->id,$friend_list)){
+											?>
+                                    			<option value="<?=$row->id?>"><?= stripslashes($row->fname);?></option>
+                                        	<? } endforeach; ?>
+                                        <? endif; ?>
+														
+									</select>
+									<label for="air_cat">Attendees</label>
+                                </div>
 							</div>
 						</div>
                         
                         <div class="row">
 							<div class="col-lg-12">
                             	<div class="form-group">
-                                	<input type="text" class="form-control" name="address" id="address" required value="<?=stripslashes($row->address)?>">
+                                	<input type="text" class="form-control" name="address" id="address" required>
 									<label for="address">Event Address</label>
                                 </div>
                             </div>  
                         </div>
-                        
                         <div class="row">
-                        	<div class="col-lg-4">
+                        	<div class="col-lg-6">
                             	<div class="form-group">
-                                    <input type="text" class="form-control" name="country" required value="<?=stripslashes($row->country)?>">
+                                	<input type="text" class="form-control" name="country" id="country" required>
 									<label for="country">Event Country</label>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                            	<div class="form-group states_wrap">
-                                    <input type="text" class="form-control" name="state" required value="<?=stripslashes($row->state)?>">
-									<label for="state">Event State</label>
-                                </div>
-                            </div> 
-                            <div class="col-lg-4">
-                            	<div class="form-group city_wrap">
-                                    <input type="text" class="form-control" name="city" required value="<?=stripslashes($row->city)?>">
-									<label for="city">Event City</label>
+                            <div class="col-lg-6">
+                            	<div class="form-group">
+                                	<input type="text" class="form-control" name="city" id="city" required>
+									<label for="country">Event City</label>
                                 </div>
                             </div> 
                         </div>
-
-						
+                        
                         <div class="row">
                         	<div class="col-lg-12">
                             	<div class="form-group">
-
-                            		<select class="form-control select2-list"  multiple required id="air_cat" name="air_cat[]">
+                            		<select class="form-control select2-list"  multiple required id="event_cat" name="event_cat[]">
                                     	<?   if($query_air_cat->num_rows() != 0) : 
-											foreach($query_air_cat->result() as $air_cat):?>
-                                    	<option value="<?=$air_cat->id?>" <? echo searchForId($air_cat->id, $man_cat);  if(searchForId($air_cat->id, $man_cat)==1):?> selected="selected"<? endif;?>><?= stripslashes($air_cat->title);?></option>
- 
+											foreach($query_air_cat->result() as $row):?>
+                                    			<option value="<?=$row->id?>"><?= stripslashes($row->title);?></option>
                                         	<? endforeach; ?>
                                         <? endif; ?>
 														
@@ -167,17 +170,16 @@ $row = $query->row();
 									<label for="air_cat">Event category </label>
                                 </div>
                             </div>
-                        </div>
-                        
+                        </div>    
+
                         <div class="row">
                         	<div class="col-lg-12">
                             	<div class="form-group">
                                     <div id="summernote">
-                                    	<?=stripslashes($row->details)?>
                                     </div>
                                 </div>
                             </div>
-                            <textarea id="editor1" name="editor1" style="display:none"><?=stripslashes($row->details)?></textarea>
+                            <textarea id="editor1" name="editor1" style="display:none"></textarea>
                         </div>
                         <br/>
                         <div class="row">
@@ -189,63 +191,50 @@ $row = $query->row();
                                     <div class="card-body">
                                         <div class="row">
                                         	<div class="col-lg-12">
-                                        		<div class="no-border holder">
-                                                	<h4 class="text-accent">Event Main Image</h4>     
-                                                </div>
-                                            </div>
-                                        	<? 
-											if($query_media_featuredImage->num_rows() != 0) :
-											$row_media_featuredImage = $query_media_featuredImage->row();?>
-                                        	<div class="col-lg-4">
-                                            	<img src="<?=base_url()?>_images/profile_images/thumb/<?=$row_media_featuredImage->path?>" class="img-responsive img-thumbnail" alt="featuredImage">
-                                            </div>
-                                            <? endif;?>
-                                        	<div class="col-lg-8">
                                             	<div class="form-group">
-                                                    <input type="file" class="form-control dirty" name="featuredImage" id="featuredImage">
+                                                    <input type="file" class="form-control dirty" name="featuredImage" id="featuredImage" required>
+                                                    <label for="featuredImage">Event Main Image</label>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <? if($query_media_gallery->num_rows() != 0) :?>
-                                        <div class="row">
-                                        	<div class="col-lg-12">
-                                        		<div class="no-border holder">
-                                                	<h4 class="text-accent">Gallery Images</h4>     
-                                                </div>
-                                            </div>
-                                            <? $image_count=1; ?>
-                                            
-
-                                            <? foreach($query_media_gallery->result() as $row_media_galler):?>
-                                            	<div class="col-lg-2 galleryImageContainer">
-                                                	<a class="btn ink-reaction btn-floating-action btn-primary btn-xs stick-top-right delete_gal_image" data-id="<?=$row_media_galler->id?>"><span class="md md-delete"></span></a>
-                                                	<img src="<?=base_url()?>_images/media_images/thumb/<?=$row_media_galler->path?>" class="img-responsive img-thumbnail" alt="media_images">
-                                                </div>
-                                            <? $image_count++; ?>
-                                            <? endforeach;?>
-
-                                            
-                                        </div>
-                                        <? endif;?>
-                                        <div class="row media">
-                                        	
                                         </div>
                                         
-                                        <div class="row">
+                                        <!--div class="row media">
+                                        	<div class="col-lg-12">
+                                            	<div class="form-group">
+                                                    <input type="file" class="form-control dirty" name="galleryImage[]" id="galleryImage" >
+                                                    <label for="galleryImage">Event Gallery Image</label>
+                                                </div>
+                                            </div>
+                                        </div--->
+                                        
+                                        <!--div class="row">
                                         	<div class="col-lg-12">
                                             	<a class="btn ink-reaction btn-raised btn-default-light" id="addmorefields"><i class="fa fa-plus fa-fw"></i> Add More Gallery Images</a>
                                             </div>
-                                        </div>
+                                        </div-->
                                        
                                         
                                     </div>
                                 </div>
                         	</div>
                         </div>
+						<!--<div class="row">
+                            <div class="col-lg-4">
+                            	<div >
+    								<label class="radio-inline radio-styled">
+                                    	<input type="radio" name="isactive" value="1"><span>Publish</span>
+                                    </label>
+                                    <label class="radio-inline radio-styled">
+                                    	<input type="radio" name="isactive" value="0" checked><span>Inactive</span>
+                                	</label>
+                            	</div>
+                        	</div>
+                        </div>-->
+
 					</div><!--end .card-body -->
 					<div class="card-actionbar">
 						<div class="card-actionbar-row">
-							<button type="submit" class="btn ink-reaction btn-primary style-accent">Submit</button>
+							<button type="submit" class="btn ink-reaction btn-primary style-accent">Create Event</button>
 						</div>
 					</div>
 				</div><!--end .card -->
