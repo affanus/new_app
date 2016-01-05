@@ -54,17 +54,7 @@ $(document).ready(function() {
         <div class="card-body style-default-bright">
         	<form class="form floating-label form-validate" role="form" action="<?= base_url();?>users/register_action" method="post" id="userRegistration" enctype="multipart/form-data">
             	<div class="row">
-                	<div class="col-sm-4">
-                    	<div class="form-group">
-                        	<select id="title" name="title" class="form-control" required>
-                            	<option value="">&nbsp;</option>
-                                <option value="Mr">Mr.</option>
-                                <option value="Mrs">Mrs.</option>
-                                <option value="Miss">Miss.</option>
-                            </select>
-                            <label for="title" class="control-label">Title</label>
-                        </div>
-                    </div>
+                	
                     <div class="col-sm-4">
                    		<div class="form-group">
                         	<input type="text" name="fname" id="fname" class="form-control" data-rule-minlength="2" required>
@@ -75,6 +65,17 @@ $(document).ready(function() {
                     	<div class="form-group">
                         	<input type="text" name="lname" id="lname" class="form-control" data-rule-minlength="2" required>
                             <label for="lname" class="control-label">Last name</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-4" style="display:none;">
+                    	<div class="form-group">
+                        	<select id="title" name="title" class="form-control" required>
+                            	<option value="">&nbsp;</option>
+                                <option value="Mr">Mr.</option>
+                                <option value="Mrs">Mrs.</option>
+                                <option value="Miss">Miss.</option>
+                            </select>
+                            <label for="title" class="control-label">Title</label>
                         </div>
                     </div>
 				</div>

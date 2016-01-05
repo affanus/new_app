@@ -8,7 +8,7 @@ $burl = base_url();
 <div id="content">
 	<section class="style-default-bright">
     	<div class="section-header" style="position: relative;">
-			<h2 class="text-primary"><?= $title?></h2>
+			<h2 class="text-primary">Approval Requests</h2>
             <!--<div style="position: absolute; right: 213px; bottom: -34px; z-index: 100;"><a class="btn ink-reaction btn-raised btn-default-light" href="<?php echo base_url();?>admin/<?=$controler_name;?>/add/<?= $this->uri->segment(4);?>"><i class="fa fa-plus fa-fw"></i> <?=$add_link?> </a></div>-->
 		</div>
 		<div class="section-body">

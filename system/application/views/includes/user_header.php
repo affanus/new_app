@@ -57,6 +57,33 @@ $row_user_query = $user_query->row();
                     </ul>
                 </div>
                 <div class="headerbar-right">
+                	<ul class="header-nav header-nav-options">
+                    	<li class="dropdown hidden-xs">
+							<a href="javascript:void(0);" class="btn btn-icon-toggle btn-default" data-toggle="dropdown">
+								<i class="fa fa-bell"></i><sup class="badge style-danger">4</sup>
+							</a>
+							<ul class="dropdown-menu animation-expand">
+								<li class="dropdown-header">Requests</li>
+								<li>
+									<a class="alert alert-callout alert-warning" href="javascript:void(0);">
+										<img class="pull-right img-circle dropdown-avatar" src="<?=base_url()?>/assets/img/avatar2.jpg?1404026449" alt="" />
+										<strong>Name name</strong><br/>
+										<small>Testing functionality...</small>
+									</a>
+								</li>
+								<li>
+									<a class="alert alert-callout alert-info" href="javascript:void(0);">
+										<img class="pull-right img-circle dropdown-avatar" src="<?=base_url()?>/assets/img/avatar3.jpg?1404026799" alt="" />
+										<strong>Name name</strong><br/>
+										<small>Reviewing last changes...</small>
+									</a>
+								</li>
+								<li class="dropdown-header">Options</li>
+								<li><a href="<?=base_url()?>users/show_request">View all Requests <span class="pull-right"><i class="fa fa-arrow-right"></i></span></a></li>
+								
+							</ul><!--end .dropdown-menu -->
+						</li>
+                    </ul>
                     <ul class="header-nav header-nav-profile">
                         <li class="dropdown">
                             <a href="javascript:void(0);" class="dropdown-toggle ink-reaction" data-toggle="dropdown">

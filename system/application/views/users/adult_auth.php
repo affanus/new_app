@@ -1,3 +1,9 @@
+<link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/css/theme-5/libs/select2/select2.css?1424887856" />
+<script>
+$(document).ready(function() {
+	$(".request_receiver_id").select2({allowClear: true});
+});
+</script>
 <div id="content">
 	<section>
 		
@@ -10,7 +16,7 @@
 									<h3>Approval Request</h3>
 									<p>We need to Verify you creditenials that you are human not Robot. You can use any of the following option to verify yourself</p>
 									
-										 <form class="form floating-label form-validate" role="form" action="<?=base_url()?>users/adult_ask_parents" method="post" id="userRegistration" enctype="multipart/form-data">
+										 <form class="form form-validate" role="form" action="<?=base_url()?>users/adult_ask_parents" method="post" id="userRegistration" enctype="multipart/form-data">
 											<!--end .form-group -->
                                             <?php $result = $this->db->select('request_sender_id')->from('request')->where('request_sender_id',$this->session->userdata('user_id'))->get()->result_array(); ?>
                                            <?php 
@@ -19,7 +25,7 @@
 
                                             	Your Approval Request is Still Pending !
                                             </div>
-                                            <?php } ?>
+                                            <?php } else { ?>
 											<div class="form-group">
 												<div class="col-sm-9">
 													<label class="radio-inline radio-styled">
@@ -28,7 +34,7 @@
 													</label>
 													<label class="radio-inline radio-styled">
 														<input type="radio" name="inlineRadioOptions" value="option2">
-                                                        <span>Dollar Transection</span>
+                                                        <span>Dollar Transaction </span>
 													</label>
 													<label class="radio-inline radio-styled">
 														<input type="radio" name="inlineRadioOptions" value="option3" onclick="admin_verify()">
@@ -40,7 +46,7 @@
                                             	<div id="search" style="display:none;">
                                                     <div class="col-sm-5">
                                                         <div class="form-group">
-                                                        <select id="title" name="request_receiver_id" class="form-control" required>
+                                                        <select id="title" name="request_receiver_id" class="form-control request_receiver_id" required>
                                                             <option value="">--Select One--</option>
                                                             <?php $users = $this->db->select('*')->from('users')->where('isactive','1')->where('user_verify','1')->where('id !=',$this->session->userdata('user_id'))->get()->result_array();
                                                             foreach($users as $userss):
@@ -70,6 +76,7 @@
                                                         </div>
                                                 </div>
                                             </div>
+                                            <? } ?>
 											<br/><br/>
                                             <!--<?php if(!empty($result)){ ?>
                                           	 <div class="row" style="margin-left:10px;">

@@ -51,6 +51,10 @@ class Contacts extends Controller
 		$this->db->update('request', $data); 
 		$this->db->where('id', $user_id);
 		$this->db->update('users', $admin); 
+		
+		
+		$this->db->where('request_id', $id);
+		$this->db->delete('request');	
 		redirect('admin/'.$this->controler_name.'/', 'refresh');
 	}
 	

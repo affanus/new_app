@@ -79,12 +79,13 @@ $row_user_query = $user_query->row();
                         <?php if(!empty($varified_user)){ ?>
 							<div class="col-md-8">
 								<h2>Events</h2>
-								<?php if($user_check =='U'){ ?>
+								
 								<!-- BEGIN ENTER MESSAGE -->
 								<!-- BEGIN ENTER MESSAGE -->
 
 								<!-- BEGIN MESSAGE ACTIVITY -->
 								<div class="tab-pane" id="activity" style="background: #fff;padding: 100px 10px 0 20px;">
+                                <?php if($user_check =='U'){ ?>
 								<div class="pull-right" style="margin-top: -76px;">
 								<form class="form" action="">
 									<div class="no-margin">
@@ -97,7 +98,7 @@ $row_user_query = $user_query->row();
 										<!--end .card-actionbar -->
 									</div><!--end .card -->
 								</form>
-</div>
+								</div>
 								<?php } ?>
 									<ul class="timeline collapse-lg timeline-hairline">
                                                  <?php 
@@ -150,6 +151,17 @@ $row_user_query = $user_query->row();
 							<!-- END MESSAGE ACTIVITY -->
 						<?php }else{?>
 						<div class="col-md-8">
+                        	<div style="color:red;">
+<? $birthDate = $row_user_query->bday;
+$birthDate = explode("/", $birthDate);
+			  //get age from date or birthdate
+			  $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md")
+				? ((date("Y") - $birthDate[2]) - 1)
+				: (date("Y") - $birthDate[2]));
+ ?>
+                            	Your Approval Request is Still Pending !<br/>
+                                <a class="btn ink-reaction btn-primary style-accent" href="<?=base_url()?>users/<? if ($age>14):?>adult_auth<? else: ?>child_auth<? endif;?>">Click here to check</a> 
+                            </div>
                         </div>
 						<?php } ?>
 							<!-- BEGIN PROFILE MENUBAR -->
@@ -360,7 +372,11 @@ $row_user_query = $user_query->row();
 						                                    <img src="<?=base_url()?>assets/img/no-user-image-square.jpg" />
 						                                <? endif;?>
 													</div>
-													<div class="tile-text"><?=$this->db->get_where('users', array('id' => $userss['request_sender_id']))->row()->fname;?>&nbsp;<?=$this->db->get_where('users', array('id' => $userss['request_sender_id']))->row()->lname;?>
+													<div class="tile-text">
+													<? if($userss['parent_id']=='P'):?>
+														Your child 
+													<? endif;?>
+													<strong><a href="#"><?=$this->db->get_where('users', array('id' => $userss['request_sender_id']))->row()->fname;?>&nbsp;<?=$this->db->get_where('users', array('id' => $userss['request_sender_id']))->row()->lname;?></a></strong> request your approval to join chymps.
                                                     <small style="display:inline;">             
                                                     	
 														<a href="<?php echo base_url();?>users/update_status/<?= $userss['request_id'];?>/1/<?=$this->db->get_where('users', array('id' => $userss['request_sender_id']))->row()->id; ?>" class="btn btn-icon-toggle style-success" data-toggle="tooltip" data-placement="top" data-original-title="Status: Approve" onclick="return confirm('Are You Sure To Approve?')"><i class="md md-done"></i></a>
@@ -424,7 +440,11 @@ $row_user_query = $user_query->row();
 										?>
 											<li class="tile">
 												<div class="tile-content ink-reaction">
-													<div class="tile-text"><?=$this->db->get_where('events', array('id' => $eventss['event_id']))->row()->title;?>
+													<div class="tile-text">
+													<?=$this->db->get_where('users', array('id' => $eventss['s_id']))->row()->fname;?>
+                                                    &nbsp;<?=$this->db->get_where('users', array('id' => $eventss['s_id']))->row()->lname;?> has requested you to join 
+                                                    
+													<?=$this->db->get_where('events', array('id' => $eventss['event_id']))->row()->title;?>
                                                     <small style="display:inline;">             
                                                     	
 														<a href="<?php echo base_url();?>users/event_request/<?= $eventss['request_id'];?>/1" class="btn btn-icon-toggle style-success" data-toggle="tooltip" data-placement="top" data-original-title="Status: Accept" onclick="return confirm('Are You Sure To Approve?')"><i class="md md-done"></i></a>

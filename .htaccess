@@ -2,13 +2,13 @@
 
 RewriteEngine On
 
-RewriteBase /event-app/
+RewriteBase /new_app/
 
 RewriteCond %{REQUEST_FILENAME} !-f
 
 RewriteCond %{REQUEST_FILENAME} !-d
 
-RewriteRule ^(.*)$ /event-app/index.php?/$1 [L]
+RewriteRule ^(.*)$ /new_app/index.php?/$1 [L]
 
 
 
