@@ -236,7 +236,9 @@ class Users extends Controller {
 	function adult_auth(){
 		if($this->session->userdata('user_id')):
 			$data['main_content'] = 'users/adult_auth';
+			$data['jsFilesArray'] =  array("libs/select2/select2.min.js");
 			$this->load->view('includes/user_adult', $data);
+			
 		else:
 			redirect(base_url().'users/login');
 		endif;
@@ -245,6 +247,7 @@ class Users extends Controller {
 	function child_auth(){
 		if($this->session->userdata('user_id')):
 			$data['main_content'] = 'users/child_auth';
+			$data['jsFilesArray'] =  array("libs/select2/select2.min.js");
 			$this->load->view('includes/user_adult', $data);
 		else:
 			redirect(base_url().'users/login');
@@ -427,16 +430,17 @@ class Users extends Controller {
 		$data['request_sender_id'] 	 = $this->session->userdata('user_id');
 		if($_POST['request_receiver_id'] !=""):
 		$data['request_receiver_id'] = $_POST['request_receiver_id'];
+		//$data['type'] = $_POST['member_type'];
 		else:
 		$data['type'] = "admin";
 		endif;
-		$data['parent_id'] = "P";
+		
 		$this->db->insert('request',$data);
-		$folling['u_id'] = $this->session->userdata('user_id');
+/*		$folling['u_id'] = $this->session->userdata('user_id');
 		$folling['f_id'] = $_POST['request_receiver_id'];
 		$folling['family_member'] = $_POST['member_type'];
 		$folling['count'] = 1;
-		$this->db->insert('following_list',$folling);
+		$this->db->insert('following_list',$folling);*/
 		$data['main_content'] = 'users/adult_auth';
 		$this->load->view('includes/user_adult', $data);
 	}
@@ -457,7 +461,11 @@ class Users extends Controller {
 		$this->db->update('request', $data); 
 		$this->db->where('id', $user_id);
 		$this->db->update('users', $admin); 
-		$this->db->query("UPDATE following_list SET count = count - 1 WHERE u_id = '".$user_id."'");
+		$this->db->query("UPDATE following_list SET count = count - 1 WHERE u_id = '".$user_id."' and f_id='".$this->session->userdata('user_id')."'");
+		
+		$this->db->where('request_id', $id);
+		$this->db->delete('request');	
+		
 		redirect(base_url().'users/profile');
 	}
 	function update_status_all($id, $status,$user_id){

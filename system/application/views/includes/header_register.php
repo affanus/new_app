@@ -87,7 +87,7 @@
 				</div>
 				
                 <? else:?>
-            		<img class="" src="<?=base_url()?>assets/img/logo_CHYMPS.png"  style="display:block; margin:15px auto;"/>
+            		<h2>CHYMPS</h2>
                 <? endif; ?>
             </div>
         </header>

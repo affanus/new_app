@@ -40,7 +40,7 @@ $row_user_query = $user_query->row();
  									endforeach;
 									//AND approved_by !='".$this->session->userdata('user_id')."' AND id !='".$approved_by."' AND approved_by !=''
 									$approved_by = $this->db->get_where('users',array("id"=>$this->session->userdata('user_id')))->row()->approved_by;
-									$where1 = "fname LIKE '%$friendSearch%' AND id != '".$this->session->userdata('user_id')."' AND approved_by !=''";
+									$where1 = "fname LIKE '%$friendSearch%' AND id != '".$this->session->userdata('user_id')."' AND isactive =1";
 									$data = $this->db->select('*')->from('users')->where($where1)->get()->result_array();
 									foreach($data as $datas):
 									if(@!in_array($datas['id'],$friend_list)){

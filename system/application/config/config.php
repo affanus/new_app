@@ -50,7 +50,7 @@
 
 
 
-$config['base_url']	= "http://localhost/event-app";
+$config['base_url']	= "http://localhost/new_app";
 
 @define('SITE_TITLE_ADMIN', 'Event-APP Admin');
 
