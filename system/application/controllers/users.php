@@ -687,5 +687,19 @@ function add_action()
 		$this->db->insert('todo',$data);
 		redirect('users/event_detail/'.$_POST['event_id'], 'refresh');
 	}
+	
+function event_calender(){
+	 	if($this->session->userdata('user_id')):
+		
+		$data['jsFilesArray'] =  array("libs/select2/select2.min.js","libs/bootstrap-datepicker/bootstrap-datepicker.js");
+
+	
+		$data['main_content'] = 'calender_view';
+		$this->load->view('includes/user_adult', $data);
+		else:
+			redirect(base_url().'users/login');
+		endif;
+	
+}
 
 }

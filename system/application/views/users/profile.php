@@ -92,7 +92,7 @@ $row_user_query = $user_query->row();
 										<div>
 											<div class="form-groups">
 												<a  href="<?=base_url()?>users/create_event/" class="btn ink-reaction btn-raised btn-primary">Create Event</a>
-												<a  href="<?=base_url()?>users/create_event/" class="btn ink-reaction btn-raised btn-primary">View Event Calender</a>
+												<a  href="<?=base_url()?>users/event_calender/" class="btn ink-reaction btn-raised btn-primary">View Event Calender</a>
 											</div>
 										</div><!--end .card-body -->
 										<!--end .card-actionbar -->
